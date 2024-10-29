@@ -1,16 +1,14 @@
+import Navbar from "@/components/navbar";
+import { Toaster } from "@/components/ui/sonner";
+import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Bricolage_Grotesque, Inter } from "next/font/google";
 import "./globals.css";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+const inter = Inter({ subsets: ["latin"] });
+const bricolageGrotesque = Bricolage_Grotesque({
+  subsets: ["latin"],
+  variable: "--font-heading",
 });
 
 export const metadata: Metadata = {
@@ -26,9 +24,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={cn(
+          inter.className,
+          bricolageGrotesque.variable,
+          "antialiased min-h-screen flex flex-col"
+        )}
       >
+        <Navbar />
+
         {children}
+
+        <Toaster />
       </body>
     </html>
   );
