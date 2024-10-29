@@ -177,4 +177,6 @@ const MenuButton: React.FC<MenuButtonProps> = ({
   </Button>
 );
 
+TiptapEditor.displayName = "TiptapEditor";
+
 export { TiptapEditor };

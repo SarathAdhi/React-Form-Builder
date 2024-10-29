@@ -42,7 +42,7 @@ const createFieldSchema = (field: FormFieldSchemaType): z.ZodTypeAny => {
   return field.required === true ? schema : schema.optional();
 };
 
-const getDefaultValue = (field: FormFieldSchemaType): any => {
+const getDefaultValue = (field: FormFieldSchemaType) => {
   switch (field.fieldType) {
     case "checkbox":
     case "switch":

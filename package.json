@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run prebuild && next build",
     "start": "next start",
     "lint": "next lint",
-    "prebuild": "node scripts/generateComponentRegistry.js"
+    "prebuild": "node ./scripts/generateComponentRegistry.js"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",

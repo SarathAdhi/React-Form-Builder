@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { CheckIcon, CopyIcon } from "lucide-react";
-import { Highlight, themes } from "prism-react-renderer";
+import { Highlight, RenderProps, themes } from "prism-react-renderer";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 
@@ -47,7 +47,13 @@ const CodeHighlighter = ({ code, codeContainerClassName }: Props) => {
       </Button>
 
       <Highlight code={formattedCode} language="tsx" theme={themes.oneDark}>
-        {({ className, style, tokens, getLineProps, getTokenProps }: any) => (
+        {({
+          className,
+          style,
+          tokens,
+          getLineProps,
+          getTokenProps,
+        }: RenderProps) => (
           <pre
             className={cn(
               "p-4 text-sm rounded-lg h-full md:max-h-[80vh] overflow-auto",
@@ -56,9 +62,9 @@ const CodeHighlighter = ({ code, codeContainerClassName }: Props) => {
             )}
             style={style}
           >
-            {tokens.map((line: any, i: number) => (
+            {tokens.map((line, i) => (
               <div key={i} {...getLineProps({ line })}>
-                {line.map((token: any, key: any) => (
+                {line.map((token, key) => (
                   <span key={key} {...getTokenProps({ token })} />
                 ))}
               </div>
