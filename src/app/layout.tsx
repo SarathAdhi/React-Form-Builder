@@ -1,6 +1,7 @@
 import Navbar from "@/components/navbar";
 import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
+import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, Inter } from "next/font/google";
 import "./globals.css";
@@ -34,6 +35,8 @@ export default function RootLayout({
         <Navbar />
 
         {children}
+
+        <Analytics />
 
         <Toaster />
       </body>
