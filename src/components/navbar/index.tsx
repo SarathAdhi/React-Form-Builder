@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { VariantProps } from "class-variance-authority";
-import { Menu } from "lucide-react";
+import { GithubIcon, Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -80,11 +80,7 @@ const Navbar = () => {
               if (!hasItems) {
                 return (
                   <li key={title}>
-                    <Button
-                      variant={variant || "ghost"}
-                      rounded="full"
-                      size="sm"
-                    >
+                    <Button variant={variant || "ghost"} rounded="full">
                       <Link href={href!}>{title}</Link>
                     </Button>
                   </li>
@@ -92,27 +88,36 @@ const Navbar = () => {
               }
 
               return (
-                <DropdownMenu key={title}>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant={variant || "ghost"}
-                      rounded="full"
-                      size="sm"
-                    >
-                      {title}
-                    </Button>
-                  </DropdownMenuTrigger>
+                <li key={title}>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant={variant || "ghost"} rounded="full">
+                        {title}
+                      </Button>
+                    </DropdownMenuTrigger>
 
-                  <DropdownMenuContent align="end">
-                    {items.map((item) => (
-                      <DropdownMenuItem key={item.title} asChild>
-                        <Link href={item.href}>{item.title}</Link>
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                    <DropdownMenuContent align="end">
+                      {items.map((item) => (
+                        <DropdownMenuItem key={item.title} asChild>
+                          <Link href={item.href}>{item.title}</Link>
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </li>
               );
             })}
+
+            <li>
+              <Button variant="outline" rounded="full" size="icon" asChild>
+                <a
+                  target="_blank"
+                  href="https://github.com/SarathAdhi/React-Form-Builder"
+                >
+                  <GithubIcon className="!size-5" />
+                </a>
+              </Button>
+            </li>
           </ul>
         </nav>
 
