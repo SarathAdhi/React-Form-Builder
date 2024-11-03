@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+
 type Props = {
   params: {
     form_type: string;

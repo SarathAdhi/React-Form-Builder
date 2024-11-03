@@ -21,15 +21,15 @@ const pages: {
     items: [
       {
         title: "All Components",
-        href: "/components",
+        href: "/components/calendar",
       },
       {
         title: "React Hook Form",
-        href: "/react-hook-form/components",
+        href: "/react-hook-form/components/form",
       },
       {
         title: "TanStack Form",
-        href: "/tanstack-form/components",
+        href: "/tanstack-form/components/form",
       },
       {
         title: "Formik",

@@ -1,14 +1,22 @@
 import { componentRegistry, ComponentRegistryType } from "@/__registry__";
 import ActiveLink from "@/components/active-link";
 
-const files = (form_type: ComponentRegistryType) =>
-  Object.values(componentRegistry[form_type]).map((component) => {
-    const name = component.fileName.replace(".tsx", "");
-    return {
-      name: name.replace(/-/g, " "),
-      href: `/${form_type}/components/` + name,
-    };
-  });
+const files = (form_type: ComponentRegistryType) => [
+  {
+    name: "form",
+    href: `/${form_type}/components/form`,
+  },
+  ...Object.values(componentRegistry[form_type])
+    .filter((component) => component.fileName !== "form.tsx")
+    .map((component) => {
+      const name = component.fileName.replace(".tsx", "");
+
+      return {
+        name: name.replace(/-/g, " "),
+        href: `/${form_type}/components/` + name,
+      };
+    }),
+];
 
 export default function ComponentsRootLayout({
   children,
