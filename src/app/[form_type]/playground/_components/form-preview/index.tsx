@@ -17,7 +17,7 @@ import {
   FormBuilderSchemaType,
   FormFieldSchemaType,
 } from "@/zod/form-builder-schema";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { memo } from "react";
 import { FieldValues, useForm, useFormContext } from "react-hook-form";
 import { toast } from "sonner";
@@ -48,23 +48,27 @@ const FormTypeSelector = ({
   onTypeChange,
 }: {
   onTypeChange: (value: FormType) => void;
-}) => (
-  <Select
-    defaultValue="react-hook-form"
-    onValueChange={(value) => onTypeChange(value as FormType)}
-  >
-    <SelectTrigger className="w-40">
-      <SelectValue placeholder="Select form type" />
-    </SelectTrigger>
-    <SelectContent>
-      {FORM_TYPE_OPTIONS.map((option) => (
-        <SelectItem key={option.value} value={option.value}>
-          {option.label}
-        </SelectItem>
-      ))}
-    </SelectContent>
-  </Select>
-);
+}) => {
+  const { form_type } = useParams();
+
+  return (
+    <Select
+      defaultValue={form_type as string}
+      onValueChange={(value) => onTypeChange(value as FormType)}
+    >
+      <SelectTrigger className="w-40">
+        <SelectValue placeholder="Select form type" />
+      </SelectTrigger>
+      <SelectContent>
+        {FORM_TYPE_OPTIONS.map((option) => (
+          <SelectItem key={option.value} value={option.value}>
+            {option.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
+};
 
 const TabHeader = ({
   onTypeChange,
@@ -82,6 +86,7 @@ const TabHeader = ({
         </TabsTrigger>
       </TabsList>
     </div>
+
     <FormTypeSelector onTypeChange={onTypeChange} />
   </div>
 );
