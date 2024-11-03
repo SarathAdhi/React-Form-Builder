@@ -4,7 +4,6 @@ import {
   FormBuilderSchemaType,
   FormFieldSchemaType,
 } from "@/zod/form-builder-schema";
-import { useParams } from "next/navigation";
 import { z } from "zod";
 
 // Types
@@ -190,11 +189,10 @@ const formatFieldProps = (field: FormFieldSchemaType): string => {
     .join(" ");
 };
 
-export const generateFormCode = (formFields: FormBuilderSchemaType): string => {
-  const { form_type } = useParams<{
-    form_type: ComponentRegistryType;
-  }>();
-
+export const generateFormCode = (
+  formFields: FormBuilderSchemaType,
+  form_type: ComponentRegistryType
+): string => {
   const imports = Array.from(generateImports(formFields, form_type)).join("\n");
   const schema = getZodSchemaString(formFields);
   const defaultValues = generateDefaultValues(formFields);

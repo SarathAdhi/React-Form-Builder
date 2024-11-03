@@ -9,8 +9,8 @@ import { useParams } from "next/navigation";
 import { useFormContext } from "react-hook-form";
 import { generateFormCode } from "./generate-complete-code";
 
-type FormType = ComponentRegistryType;
-type FormComponentRegistryType = (typeof componentRegistry)[FormType];
+type FormComponentRegistryType =
+  (typeof componentRegistry)[ComponentRegistryType];
 
 interface FormComponentType {
   fileName: string;
@@ -85,7 +85,7 @@ const TabTriggers = ({
 );
 
 const CodeViewer = () => {
-  const { form_type } = useParams<{ form_type: FormType }>();
+  const { form_type } = useParams<{ form_type: ComponentRegistryType }>();
   const { watch } = useFormContext<FormBuilderSchemaType>();
   const fields = watch("fields");
 
@@ -111,7 +111,7 @@ const CodeViewer = () => {
       ))}
 
       <TabsContent value="form">
-        <CodeHighlighter code={generateFormCode(watch())} />
+        <CodeHighlighter code={generateFormCode(watch(), form_type)} />
       </TabsContent>
     </Tabs>
   );
