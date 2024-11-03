@@ -4,17 +4,18 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 interface Props {
   params: {
     filename: string;
+    form_type: string;
   };
 }
 
-const ReactHookFormComponentsPage = async ({ params: { filename } }: Props) => {
+const ReactHookFormComponentsPage = async ({ params }: Props) => {
+  const { filename, form_type } = params;
+
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/file?filename=react-hook-form/${filename}`
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/file?filename=${form_type}/${filename}`
   );
 
   const data = await response.json();
-
-  // console.log(data);
 
   if (!data.content) return <div>File not found</div>;
 

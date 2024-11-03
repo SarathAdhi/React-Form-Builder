@@ -1,6 +1,7 @@
 "use client";
 import { Form } from "@/components/ui/react-hook-form/form";
 import { useDialogHandler } from "@/hooks/use-dialog-handler";
+import { useFormStore } from "@/store/form";
 import {
   FormBuilderSchemaType,
   formBuilderSchema,
@@ -38,12 +39,14 @@ const EditFormFieldDialog = dynamic(
 );
 
 const FormBuilder = () => {
+  const { formFields } = useFormStore();
+
   const { isDialogOpen, onOpen, onClose, onOpenChange } = useDialogHandler();
 
   const form = useForm<FormBuilderSchemaType>({
     resolver: zodResolver(formBuilderSchema),
     defaultValues: {
-      fields: [],
+      fields: formFields || [],
       selectedFormFieldIndex: undefined,
     },
   });

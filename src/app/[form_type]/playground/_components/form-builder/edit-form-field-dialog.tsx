@@ -50,8 +50,6 @@ const EditFormFieldDialog = ({
   );
   const showInputType = selectedField.fieldType === "input";
 
-  console.log();
-
   return (
     <Dialog
       open={isDialogOpen}

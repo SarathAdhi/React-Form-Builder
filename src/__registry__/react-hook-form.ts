@@ -228,18 +228,18 @@ import { Control, FieldValues } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
   FormControl,
   FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@/components/ui/react-hook-form/form";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -441,12 +441,195 @@ FileUploadFormField.displayName = "FileUploadFormField";
 export { FileUploadFormField };
 `
   },
+  "form.tsx": {
+    fileName: `form.tsx`,
+    sourceCode: `"use client"
+
+import * as React from "react"
+import * as LabelPrimitive from "@radix-ui/react-label"
+import { Slot } from "@radix-ui/react-slot"
+import {
+  Controller,
+  ControllerProps,
+  FieldPath,
+  FieldValues,
+  FormProvider,
+  useFormContext,
+} from "react-hook-form"
+
+import { cn } from "@/lib/utils"
+import { Label } from "@/components/ui/label"
+
+const Form = FormProvider
+
+type FormFieldContextValue<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+> = {
+  name: TName
+}
+
+const FormFieldContext = React.createContext<FormFieldContextValue>(
+  {} as FormFieldContextValue
+)
+
+const FormField = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+>({
+  ...props
+}: ControllerProps<TFieldValues, TName>) => {
+  return (
+    <FormFieldContext.Provider value={{ name: props.name }}>
+      <Controller {...props} />
+    </FormFieldContext.Provider>
+  )
+}
+
+const useFormField = () => {
+  const fieldContext = React.useContext(FormFieldContext)
+  const itemContext = React.useContext(FormItemContext)
+  const { getFieldState, formState } = useFormContext()
+
+  const fieldState = getFieldState(fieldContext.name, formState)
+
+  if (!fieldContext) {
+    throw new Error("useFormField should be used within <FormField>")
+  }
+
+  const { id } = itemContext
+
+  return {
+    id,
+    name: fieldContext.name,
+    formItemId: \`\${id}-form-item\`,
+    formDescriptionId: \`\${id}-form-item-description\`,
+    formMessageId: \`\${id}-form-item-message\`,
+    ...fieldState,
+  }
+}
+
+type FormItemContextValue = {
+  id: string
+}
+
+const FormItemContext = React.createContext<FormItemContextValue>(
+  {} as FormItemContextValue
+)
+
+const FormItem = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => {
+  const id = React.useId()
+
+  return (
+    <FormItemContext.Provider value={{ id }}>
+      <div ref={ref} className={cn("space-y-2", className)} {...props} />
+    </FormItemContext.Provider>
+  )
+})
+FormItem.displayName = "FormItem"
+
+const FormLabel = React.forwardRef<
+  React.ElementRef<typeof LabelPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
+>(({ className, ...props }, ref) => {
+  const { error, formItemId } = useFormField()
+
+  return (
+    <Label
+      ref={ref}
+      className={cn(error && "text-destructive", className)}
+      htmlFor={formItemId}
+      {...props}
+    />
+  )
+})
+FormLabel.displayName = "FormLabel"
+
+const FormControl = React.forwardRef<
+  React.ElementRef<typeof Slot>,
+  React.ComponentPropsWithoutRef<typeof Slot>
+>(({ ...props }, ref) => {
+  const { error, formItemId, formDescriptionId, formMessageId } = useFormField()
+
+  return (
+    <Slot
+      ref={ref}
+      id={formItemId}
+      aria-describedby={
+        !error
+          ? \`\${formDescriptionId}\`
+          : \`\${formDescriptionId} \${formMessageId}\`
+      }
+      aria-invalid={!!error}
+      {...props}
+    />
+  )
+})
+FormControl.displayName = "FormControl"
+
+const FormDescription = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => {
+  const { formDescriptionId } = useFormField()
+
+  return (
+    <p
+      ref={ref}
+      id={formDescriptionId}
+      className={cn("text-sm text-muted-foreground", className)}
+      {...props}
+    />
+  )
+})
+FormDescription.displayName = "FormDescription"
+
+const FormMessage = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, children, ...props }, ref) => {
+  const { error, formMessageId } = useFormField()
+  const body = error ? String(error?.message) : children
+
+  if (!body) {
+    return null
+  }
+
+  return (
+    <p
+      ref={ref}
+      id={formMessageId}
+      className={cn("text-sm font-medium text-destructive", className)}
+      {...props}
+    >
+      {body}
+    </p>
+  )
+})
+FormMessage.displayName = "FormMessage"
+
+export {
+  useFormField,
+  Form,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormDescription,
+  FormMessage,
+  FormField,
+}
+`
+  },
   "input": {
     fileName: `input-form-field.tsx`,
     sourceCode: `
 import { cn } from "@/lib/utils";
 import * as React from "react";
 import { Control, FieldValues } from "react-hook-form";
+import { Input } from "./input";
 import {
   FormControl,
   FormDescription,
@@ -455,7 +638,6 @@ import {
   FormLabel,
   FormMessage,
 } from "./form";
-import { Input } from "./input";
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -603,14 +785,6 @@ export { InputOtpFormField };
     fileName: `multi-select-form-field.tsx`,
     sourceCode: `
 import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import {
   MultiSelector,
   MultiSelectorContent,
   MultiSelectorInput,
@@ -619,6 +793,14 @@ import {
   MultiSelectorProps,
   MultiSelectorTrigger,
 } from "@/components/ui/multi-select";
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/react-hook-form/form";
 import { cn } from "@/lib/utils";
 import { Control, FieldValues, Path, PathValue } from "react-hook-form";
 
@@ -713,6 +895,7 @@ export { MultiSelectFormField, type MultiSelectFormFieldProps };
 import { cn } from "@/lib/utils";
 import * as React from "react";
 import { Control, FieldValues } from "react-hook-form";
+import { PasswordInput } from "./password-input";
 import {
   FormControl,
   FormDescription,
@@ -721,7 +904,6 @@ import {
   FormLabel,
   FormMessage,
 } from "./form";
-import { PasswordInput } from "./password-input";
 
 interface PasswordInputFormField
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -792,6 +974,7 @@ import { cn } from "@/lib/utils";
 import * as SwitchPrimitives from "@radix-ui/react-radio-group";
 import * as React from "react";
 import { Control, FieldValues } from "react-hook-form";
+import { RadioGroup, RadioGroupItem } from "./radio-group";
 import {
   FormControl,
   FormField,
@@ -799,7 +982,6 @@ import {
   FormLabel,
   FormMessage,
 } from "./form";
-import { RadioGroup, RadioGroupItem } from "./radio-group";
 
 interface Props {
   label?: string;
@@ -885,6 +1067,13 @@ import * as SelectPrimitive from "@radix-ui/react-select";
 import * as React from "react";
 import { Control, FieldValues } from "react-hook-form";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./select";
+import {
   FormControl,
   FormDescription,
   FormField,
@@ -892,13 +1081,6 @@ import {
   FormLabel,
   FormMessage,
 } from "./form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./select";
 
 interface Props {
   label?: string;
@@ -995,6 +1177,7 @@ import { cn } from "@/lib/utils";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import * as React from "react";
 import { Control, FieldValues } from "react-hook-form";
+import { Slider } from "./slider";
 import {
   FormControl,
   FormDescription,
@@ -1003,7 +1186,6 @@ import {
   FormLabel,
   FormMessage,
 } from "./form";
-import { Slider } from "./slider";
 
 interface Props {
   label?: string;
@@ -1074,6 +1256,7 @@ import { cn } from "@/lib/utils";
 import * as SwitchPrimitives from "@radix-ui/react-switch";
 import * as React from "react";
 import { Control, FieldValues } from "react-hook-form";
+import { Switch } from "./switch";
 import {
   FormControl,
   FormDescription,
@@ -1081,7 +1264,6 @@ import {
   FormItem,
   FormLabel,
 } from "./form";
-import { Switch } from "./switch";
 
 interface Props {
   label?: string;
@@ -1158,6 +1340,7 @@ export { SwitchFormField };
 import { cn } from "@/lib/utils";
 import * as React from "react";
 import { Control, FieldValues } from "react-hook-form";
+import { TagsInput } from "./tags-input";
 import {
   FormControl,
   FormDescription,
@@ -1166,7 +1349,6 @@ import {
   FormLabel,
   FormMessage,
 } from "./form";
-import { TagsInput } from "./tags-input";
 
 interface Props extends React.InputHTMLAttributes<HTMLDivElement> {
   label?: string;
@@ -1233,6 +1415,7 @@ export { TagsInputFormField };
 import { cn } from "@/lib/utils";
 import * as React from "react";
 import { Control, FieldValues } from "react-hook-form";
+import { Textarea } from "./textarea";
 import {
   FormControl,
   FormDescription,
@@ -1241,7 +1424,6 @@ import {
   FormLabel,
   FormMessage,
 } from "./form";
-import { Textarea } from "./textarea";
 
 interface TextareaProps extends React.InputHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
@@ -1308,6 +1490,7 @@ import { cn } from "@/lib/utils";
 import { EditorContent, EditorContentProps } from "@tiptap/react";
 import React from "react";
 import { Control, FieldValues } from "react-hook-form";
+import { TiptapEditor } from "./tiptap-editor";
 import {
   FormControl,
   FormDescription,
@@ -1316,7 +1499,6 @@ import {
   FormLabel,
   FormMessage,
 } from "./form";
-import { TiptapEditor } from "./tiptap-editor";
 
 interface Props extends Omit<EditorContentProps, "editor"> {
   name: string;

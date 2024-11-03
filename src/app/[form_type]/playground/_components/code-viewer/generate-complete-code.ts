@@ -1,27 +1,44 @@
+import { componentRegistry } from "@/__registry__";
 import { reactHookFormComponentRegistry } from "@/__registry__/react-hook-form";
 import {
   FormBuilderSchemaType,
   FormFieldSchemaType,
 } from "@/zod/form-builder-schema";
+import { useParams } from "next/navigation";
 import { z } from "zod";
 
 // Types
 type ZodSchemaObject = Record<string, z.ZodTypeAny>;
 type ImportSet = Set<string>;
 
-// Constants
-const BASE_IMPORTS = [
-  '"use client"',
-  'import { useState } from "react"',
-  'import { useForm } from "react-hook-form"',
-  'import { zodResolver } from "@hookform/resolvers/zod"',
-  'import * as z from "zod"',
-  'import { cn } from "@/lib/utils"',
-  'import { Button } from "@/components/ui/button"',
-  'import { Form } from "@/components/ui/form"',
-] as const;
-
 // Helper functions
+const getBaseImports = (formType: string) => {
+  const commonImports = [
+    '"use client"',
+    'import { useState } from "react"',
+    'import * as z from "zod"',
+    'import { cn } from "@/lib/utils"',
+    'import { Button } from "@/components/ui/button"',
+    'import { Form } from "@/components/ui/form"',
+  ] as const;
+
+  const formSpecificImports = {
+    "react-hook-form": [
+      'import { useForm } from "react-hook-form"',
+      'import { zodResolver } from "@hookform/resolvers/zod"',
+    ],
+    "tanstack-form": [
+      'import { useForm } from "@tanstack/react-form"',
+      'import { zodValidator } from "@tanstack/zod-form-adapter"',
+    ],
+  };
+
+  return [
+    ...commonImports,
+    ...formSpecificImports[formType as keyof typeof formSpecificImports],
+  ];
+};
+
 const createFieldSchema = (field: FormFieldSchemaType): z.ZodTypeAny => {
   const schemaMap: Record<string, () => z.ZodTypeAny> = {
     checkbox: () => z.boolean(),
@@ -49,23 +66,11 @@ const getDefaultValue = (field: FormFieldSchemaType) => {
       return false;
     case "input":
       switch (field.type) {
-        case "email":
-          return "user@example.com";
         case "number":
           return 0;
-        case "tel":
-          return "+1234567890";
-        case "url":
-          return "https://example.com";
-        case "date":
-          return new Date().toISOString().split("T")[0];
         default:
-          return "Default text";
+          return "";
       }
-    case "textarea":
-      return "Enter your text here...";
-    case "select":
-      return ""; // First option will be selected by default
     default:
       return "";
   }
@@ -148,9 +153,10 @@ export const getZodSchemaString = (
 };
 
 export const generateImports = (
-  formFields: FormBuilderSchemaType
+  formFields: FormBuilderSchemaType,
+  form_type: string
 ): ImportSet => {
-  const imports = new Set<string>(BASE_IMPORTS);
+  const imports = new Set<string>(getBaseImports(form_type));
 
   formFields.fields.flat().forEach((field) => {
     const componentInfo = reactHookFormComponentRegistry[field.fieldType];
@@ -185,7 +191,11 @@ const formatFieldProps = (field: FormFieldSchemaType): string => {
 };
 
 export const generateFormCode = (formFields: FormBuilderSchemaType): string => {
-  const imports = Array.from(generateImports(formFields)).join("\n");
+  const { form_type } = useParams<{
+    form_type: keyof typeof componentRegistry;
+  }>();
+
+  const imports = Array.from(generateImports(formFields, form_type)).join("\n");
   const schema = getZodSchemaString(formFields);
   const defaultValues = generateDefaultValues(formFields);
 
@@ -199,10 +209,8 @@ export const generateFormCode = (formFields: FormBuilderSchemaType): string => {
     )
     .join("\n\n");
 
-  return `${imports}
-
-${schema}
-
+  const formImplementations = {
+    "react-hook-form": `
 export default function MyForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -231,5 +239,37 @@ ${formFields_rendered}
       </form>
     </Form>
   );
-}`;
+}`,
+    "tanstack-form": `
+export default function MyForm() {
+  const form = useForm({
+    defaultValues: {
+${Object.entries(defaultValues)
+  .map(([key, value]) => `      ${key}: ${JSON.stringify(value)}`)
+  .join(",\n")}
+    } as z.infer<typeof formSchema>,
+    onSubmit: async (values) => {
+      console.log(values);
+    },
+    validatorAdapter: zodValidator(),
+    validators: {
+      onChange: formSchema,
+    },
+  });
+
+  return (
+    <Form {...form}>
+${formFields_rendered}
+
+      <Button type="submit">Submit</Button>
+    </Form>
+  );
+}`,
+  };
+
+  return `${imports}
+
+${schema}
+
+${formImplementations[form_type as keyof typeof formImplementations]}`;
 };

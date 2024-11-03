@@ -3,8 +3,6 @@ import DotPattern from "@/components/dot-pattern-background";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-const words = ["React Hook Form", "Formik", "TanStack Form"];
-
 const HomePage = () => {
   return (
     <div>
