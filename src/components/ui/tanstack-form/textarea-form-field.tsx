@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import * as React from "react";
-import { Control, FieldValues } from "react-hook-form";
 import { Textarea } from "../textarea";
 import {
   FormControl,
@@ -17,20 +16,11 @@ interface TextareaProps extends React.InputHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
 }
 
 const TextareaFormField = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   (
-    {
-      className,
-      containerClassName,
-      name,
-      label,
-      control,
-      description,
-      ...props
-    },
+    { className, containerClassName, name, label, description, ...props },
     ref
   ) => (
     <FormField name={name!}>

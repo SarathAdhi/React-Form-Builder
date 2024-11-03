@@ -3,7 +3,6 @@
 import { cn } from "@/lib/utils";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import * as React from "react";
-import { Control, FieldValues } from "react-hook-form";
 import {
   Select,
   SelectContent,
@@ -25,7 +24,6 @@ interface Props {
   containerClassName?: string;
   labelClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
   placeholder?: string;
   options?: {
     label: string;
@@ -43,7 +41,6 @@ const SelectFormField = React.forwardRef<
       labelClassName,
       name,
       label,
-      control,
       description,
       placeholder,
       options = [],
@@ -66,7 +63,6 @@ const SelectFormField = React.forwardRef<
               {...{
                 name,
                 label,
-                control,
                 description,
                 placeholder,
                 options,

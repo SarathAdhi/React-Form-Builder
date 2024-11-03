@@ -1,9 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { EditorContent, EditorContentProps } from "@tiptap/react";
 import React from "react";
-import { TiptapEditor } from "../tiptap-editor";
+import { SmartDatetimeInput } from "../smart-datetime-input";
 import {
   FormControl,
   FormDescription,
@@ -13,19 +12,22 @@ import {
   FormMessage,
 } from "./form";
 
-interface Props extends Omit<EditorContentProps, "editor"> {
+interface Props {
   name: string;
   label?: string;
   containerClassName?: string;
   description?: string;
   labelClassName?: string;
   required?: boolean;
-  disabled?: boolean;
 }
 
-const TiptapEditorFormField = React.forwardRef<
-  React.ElementRef<typeof EditorContent>,
-  Props
+const SmartDateTimeFormField = React.forwardRef<
+  HTMLInputElement,
+  Omit<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    "type" | "ref" | "value" | "defaultValue" | "onBlur"
+  > &
+    Props
 >(
   (
     { containerClassName, labelClassName, name, label, description, ...props },
@@ -33,7 +35,9 @@ const TiptapEditorFormField = React.forwardRef<
   ) => (
     <FormField name={name!}>
       {(field) => (
-        <FormItem className={cn("w-full space-y-1", containerClassName)}>
+        <FormItem
+          className={cn("w-full flex flex-col space-y-1", containerClassName)}
+        >
           {label && (
             <FormLabel htmlFor={name} className={labelClassName}>
               {label}{" "}
@@ -42,22 +46,16 @@ const TiptapEditorFormField = React.forwardRef<
           )}
 
           <FormControl>
-            <TiptapEditor
-              editorProps={{
-                content: field.state.value,
-                onUpdate: ({ editor }) => {
-                  field.handleChange(editor.getHTML());
-                },
-              }}
-              editorContentProps={{
-                ref,
-                disabled: field.form.state.isSubmitting || props.disabled,
-              }}
+            <SmartDatetimeInput
+              {...props}
+              ref={ref}
+              value={field.state.value}
+              onValueChange={field.handleChange}
+              disabled={field.form.state.isSubmitting || props.disabled}
             />
           </FormControl>
 
           {description && <FormDescription>{description}</FormDescription>}
-
           <FormMessage />
         </FormItem>
       )}
@@ -65,6 +63,6 @@ const TiptapEditorFormField = React.forwardRef<
   )
 );
 
-TiptapEditorFormField.displayName = "TiptapEditorFormField";
+SmartDateTimeFormField.displayName = "SmartDateTimeFormField";
 
-export { TiptapEditorFormField };
+export { SmartDateTimeFormField };

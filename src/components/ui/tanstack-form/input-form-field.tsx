@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import * as React from "react";
-import { Control, FieldValues } from "react-hook-form";
 import { Input } from "../input";
 import {
   FormControl,
@@ -17,7 +16,6 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
   labelClassName?: string;
 }
 
@@ -29,7 +27,6 @@ const InputFormField = React.forwardRef<HTMLInputElement, Props>(
       labelClassName,
       name,
       label,
-      control,
       description,
       ...props
     },

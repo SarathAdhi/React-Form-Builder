@@ -10,7 +10,6 @@ import { cn } from "@/lib/utils";
 import { CloudUploadIcon, PaperclipIcon } from "lucide-react";
 import * as React from "react";
 import { DropzoneOptions } from "react-dropzone";
-import { Control, FieldValues } from "react-hook-form";
 import {
   FormControl,
   FormDescription,
@@ -24,7 +23,6 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
   labelClassName?: string;
   dropzoneOptions?: DropzoneOptions;
 }
@@ -46,7 +44,6 @@ const FileUploadFormField = React.forwardRef<
       labelClassName,
       name,
       label,
-      control,
       description,
       dropzoneOptions = dropZoneConfig,
       ...props

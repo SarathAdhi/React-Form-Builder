@@ -1,9 +1,5 @@
 "use client";
 
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
-import { Control, FieldValues } from "react-hook-form";
-
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -12,6 +8,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 import {
   FormControl,
   FormDescription,
@@ -26,7 +24,6 @@ interface Props {
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
   labelClassName?: string;
   required?: boolean;
 }
@@ -36,7 +33,6 @@ const DatePickerFormField = ({
   labelClassName,
   name,
   label,
-  control,
   description,
   ...props
 }: Props) => (

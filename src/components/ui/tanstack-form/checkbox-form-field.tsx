@@ -3,7 +3,6 @@
 import { cn } from "@/lib/utils";
 import * as SwitchPrimitives from "@radix-ui/react-checkbox";
 import * as React from "react";
-import { Control, FieldValues } from "react-hook-form";
 import { Checkbox } from "../checkbox";
 import {
   FormControl,
@@ -17,7 +16,6 @@ interface Props {
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
   labelClassName?: string;
 }
 
@@ -32,7 +30,6 @@ const CheckboxFormField = React.forwardRef<
       labelClassName,
       name,
       label,
-      control,
       description,
       ...props
     },

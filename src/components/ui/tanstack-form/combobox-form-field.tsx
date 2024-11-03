@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
-import { Control, FieldValues } from "react-hook-form";
 import {
   FormControl,
   FormDescription,
@@ -31,7 +30,6 @@ interface Props {
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
   labelClassName?: string;
   options?: {
     label: string;
@@ -46,7 +44,6 @@ const ComboboxFormField = ({
   labelClassName,
   name,
   label,
-  control,
   description,
   options = [],
   placeholder,

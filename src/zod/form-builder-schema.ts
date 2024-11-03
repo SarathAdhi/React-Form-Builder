@@ -16,6 +16,7 @@ export const formFieldTypes = z.enum([
   "multi-select",
   "tags-input",
   "tiptap-editor",
+  "smart-datetime-input",
 ]);
 
 export const formFieldOptions = z

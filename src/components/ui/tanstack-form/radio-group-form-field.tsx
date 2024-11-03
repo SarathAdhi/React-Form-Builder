@@ -3,7 +3,6 @@
 import { cn } from "@/lib/utils";
 import * as SwitchPrimitives from "@radix-ui/react-radio-group";
 import * as React from "react";
-import { Control, FieldValues } from "react-hook-form";
 import { RadioGroup, RadioGroupItem } from "../radio-group";
 import {
   FormControl,
@@ -17,7 +16,6 @@ interface Props {
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
   labelClassName?: string;
   options?: {
     label: string;
@@ -36,7 +34,6 @@ const RadioGroupFormField = React.forwardRef<
       labelClassName,
       name,
       label,
-      control,
       description,
       options = [],
       ...props

@@ -178,7 +178,7 @@ export const generateImports = (
     const componentInfo = reactHookFormComponentRegistry[field.fieldType];
     if (componentInfo) {
       imports.add(
-        `import { ${field.fieldLabel.replace(
+        `import { ${field.fieldLabel.replaceAll(
           " ",
           ""
         )}FormField } from "@/components/ui/${componentInfo.fileName.replace(
@@ -217,7 +217,7 @@ export const generateFormCode = (
   const formFields_rendered = formFields.fields
     .map(
       (field) =>
-        `        <${field.fieldLabel.replace(
+        `        <${field.fieldLabel.replaceAll(
           " ",
           ""
         )}FormField ${formatFieldProps(field)} />`

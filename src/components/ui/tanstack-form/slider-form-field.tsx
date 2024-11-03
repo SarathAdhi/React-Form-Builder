@@ -3,7 +3,6 @@
 import { cn } from "@/lib/utils";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import * as React from "react";
-import { Control, FieldValues } from "react-hook-form";
 import { Slider } from "../slider";
 import {
   FormControl,
@@ -18,7 +17,6 @@ interface Props {
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
   labelClassName?: string;
   required?: boolean;
 }
@@ -34,7 +32,6 @@ const SliderFormField = React.forwardRef<
       labelClassName,
       name,
       label,
-      control,
       description,
       ...props
     },

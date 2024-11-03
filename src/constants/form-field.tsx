@@ -9,6 +9,7 @@ import { PasswordInputFormField } from "@/components/ui/react-hook-form/password
 import { RadioGroupFormField } from "@/components/ui/react-hook-form/radio-group-form-field";
 import { SelectFormField } from "@/components/ui/react-hook-form/select-form-field";
 import { SliderFormField } from "@/components/ui/react-hook-form/slider-form-field";
+import { SmartDateTimeFormField } from "@/components/ui/react-hook-form/smart-datetime-input-form-field";
 import { SwitchFormField } from "@/components/ui/react-hook-form/switch-form-field";
 import { TagsInputFormField } from "@/components/ui/react-hook-form/tags-input-form-field";
 import { TextareaFormField } from "@/components/ui/react-hook-form/textarea-form-field";
@@ -206,6 +207,15 @@ export const defaultFormFieldConfig: DefaultFormFieldConfig = {
     description: "Enter content using the rich text editor.",
     component: (props: FormFieldSchemaType) => (
       <TiptapEditorFormField {...filterProps(props)} />
+    ),
+  },
+  "smart-datetime-input": {
+    fieldLabel: "Smart Datetime Input",
+    label: "Select a date and time",
+    description: "Select a date and time using the smart input.",
+    placeholder: 'e.g. "tomorrow at 5pm" or "in 2 hours"',
+    component: (props: FormFieldSchemaType) => (
+      <SmartDateTimeFormField {...filterProps(props)} />
     ),
   },
 } as const;

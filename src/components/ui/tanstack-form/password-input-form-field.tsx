@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import * as React from "react";
-import { Control, FieldValues } from "react-hook-form";
 import { PasswordInput } from "../password-input";
 import {
   FormControl,
@@ -18,7 +17,6 @@ interface PasswordInputFormField
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
   labelClassName?: string;
 }
 
@@ -33,7 +31,6 @@ const PasswordInputFormField = React.forwardRef<
       labelClassName,
       name,
       label,
-      control,
       description,
       ...props
     },

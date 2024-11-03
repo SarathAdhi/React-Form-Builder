@@ -10,7 +10,6 @@ import {
   MultiSelectorTrigger,
 } from "@/components/ui/multi-select";
 import { cn } from "@/lib/utils";
-import { Control, FieldValues, Path, PathValue } from "react-hook-form";
 import {
   FormControl,
   FormDescription,
@@ -25,13 +24,12 @@ interface Option {
   value: string;
 }
 
-interface MultiSelectFormFieldProps<TFieldValues extends FieldValues>
+interface MultiSelectFormFieldProps
   extends Omit<MultiSelectorProps, "values" | "onValuesChange"> {
-  name: Path<TFieldValues>;
+  name: string;
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<TFieldValues>;
   labelClassName?: string;
   required?: boolean;
   placeholder?: string;
@@ -45,12 +43,11 @@ const MultiSelectFormField = ({
   labelClassName,
   name,
   label,
-  control,
   description,
   placeholder,
   options = [],
   ...props
-}: MultiSelectFormFieldProps<FieldValues>) => {
+}: MultiSelectFormFieldProps) => {
   return (
     <FormField name={name}>
       {(field) => (
@@ -68,9 +65,7 @@ const MultiSelectFormField = ({
               {...props}
               values={(field.state.value || []) as string[]}
               onValuesChange={(values) => {
-                field.handleChange(
-                  values as PathValue<FieldValues, Path<FieldValues>>
-                );
+                field.handleChange(values);
               }}
             >
               <MultiSelectorTrigger className={className}>
