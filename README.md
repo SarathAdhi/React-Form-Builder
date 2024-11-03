@@ -1,36 +1,140 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# React Forms - Build React Forms Effortlessly
+
+<img src="https://react-forms.sarathadhi.com/assets/logo.png" width="100" />
+
+**A powerful playground to build React form components using your preferred library** — whether it’s **React Hook Form**, **Formik**, or **TanStack Form**. Designed with **shadcn/ui** components, React Forms Playground provides copy-paste ready code, enabling you to create and test forms quickly and efficiently.
+
+[Visit React Forms](https://react-forms.sarathadhi.com/)
+
+---
+
+## Features
+
+- **Supports Major Form Libraries**: Build forms using React Hook Form, Formik, or TanStack Form, depending on your project requirements.
+- **No-Code Form Creation**: Use the intuitive drag-and-drop builder to create forms without writing code.
+- **Copy-Paste Ready Code**: Generate fully-functional, formatted code you can copy directly into your React application.
+- **shadcn/ui Integration**: All components are styled with shadcn/ui, ensuring a polished, professional appearance.
+- **Live Preview**: See how your form behaves as you build it, with real-time validation and error handling.
+- **Customizable Field Options**: Modify field properties, validation rules, and error messages to fit your exact requirements.
+- **Responsive Design**: Preview how your form looks on different screen sizes for optimal mobile and desktop layouts.
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### How to Use
+
+1. **Choose Your Library**: Start by selecting React Hook Form, Formik, or TanStack Form to ensure your form setup matches your project's requirements.
+2. **Form Builder**: Use the builder to add fields, set validations, and arrange form elements as desired.
+3. **Customize Fields**: Adjust field properties, add labels, placeholders, and specify validation rules directly in the playground.
+4. **Preview and Export Code**: Test your form in the live preview, then copy the generated code to integrate it into your application.
+
+### Example Use Cases
+
+- **Rapid Prototyping**: Quickly create form prototypes for different projects or clients.
+- **Learning and Experimentation**: Try out different libraries and form configurations to see how they work in a React environment.
+- **Speed Up Development**: Generate clean, reusable code that you can paste directly into your React application.
+
+## Components
+
+Form Builder consists of various reusable components:
+
+- **Form**: The main container for the form elements where we handle all the context.
+- **[Components]FormField**: A customizable field components like input, select, textarea, switch, file upload, etc.
+- **Button**: A styled button component for form submission.
+
+## Validation
+
+Form Builder utilizes [Zod](https://zod.dev/) for input validation. You can define schemas for your forms as follows:
+
+```javascript
+import { z } from "zod";
+
+const formSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Invalid email address"),
+});
+```
+
+This schema can be applied to your form to enforce validation rules.
+
+---
+
+## Installation
+
+To get started with Form Builder, follow these steps:
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/SarathAdhi/React-Form-Builder.git
+   ```
+
+2. Navigate into the project directory:
+
+   ```bash
+   cd React-Form-Builder
+   ```
+
+3. Install the necessary dependencies:
+   ```bash
+   npm install
+   ```
+
+## Usage
+
+To start the development server, run:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open your browser and navigate to `http://localhost:3000` to see the application in action.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Contributing
 
-## Learn More
+Contributions are welcome! If you would like to contribute to Form Builder, please follow these steps:
 
-To learn more about Next.js, take a look at the following resources:
+1. **Fork the Repository**: Click on the “Fork” button at the top right corner of the repository page.
+2. **Create a Branch**:
+   ```bash
+   git checkout -b feature/<feature_name>
+   ```
+3. **Make Changes**: Implement your feature or fix.
+4. **Commit Changes**:
+   ```bash
+   git commit -m "<relevent message>"
+   ```
+5. **Push Changes**:
+   ```bash
+   git push origin feature/<feature_name>
+   ```
+6. **Create a Pull Request**: Go to the original repository and create a pull request.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+We welcome feedback and suggestions! Please reach out through [hello@sarathadhi.com](mailto:support@sarathadhi.com).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This project is licensed under the MIT License.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+> **React Forms Playground** – The ultimate tool for building and testing dynamic forms with your preferred React form library.
+
+---
+
+## Acknowledgements
+
+- [React](https://reactjs.org/) - A JavaScript library for building user interfaces.
+- [Next.js](https://nextjs.org/) - The React framework for production.
+- [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework packed with classes that can be composed to build any design.
+- [Zod](https://zod.dev/) - TypeScript-first schema declaration and validation.
+- [React Hook Form](https://react-hook-form.com/) - Performant, flexible, and extensible forms with easy-to-use validation.
+- [Formik](https://formik.org/) - Build forms in React with the most popular form library.
+- [TanStack Form](https://tanstack.com/) - A simple, flexible, and extensible form library for React.
+- [shadcn/ui](https://shadcn.com/ui) - A collection of React components for building modern web applications.
+- [Vercel](https://vercel.com/) - The platform for deploying React applications.
