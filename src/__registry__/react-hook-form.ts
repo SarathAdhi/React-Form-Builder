@@ -1,6 +1,7 @@
 export const reactHookFormComponentRegistry = {
   "checkbox": {
     fileName: `checkbox-form-field.tsx`,
+    componentName: `checkbox`,
     sourceCode: `
 import { cn } from "@/lib/utils";
 import * as SwitchPrimitives from "@radix-ui/react-checkbox";
@@ -86,6 +87,7 @@ export { CheckboxFormField };
   },
   "combobox": {
     fileName: `combobox-form-field.tsx`,
+    componentName: `combobox`,
     sourceCode: `
 import { Button } from "@/components/ui/button";
 import {
@@ -220,6 +222,7 @@ export { ComboboxFormField };
   },
   "date-picker": {
     fileName: `date-picker-form-field.tsx`,
+    componentName: `date-picker`,
     sourceCode: `
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
@@ -322,6 +325,7 @@ export { DatePickerFormField };
   },
   "file-upload": {
     fileName: `file-upload-form-field.tsx`,
+    componentName: `file-upload`,
     sourceCode: `
 import {
   FileInput,
@@ -443,6 +447,7 @@ export { FileUploadFormField };
   },
   "form.tsx": {
     fileName: `form.tsx`,
+    componentName: `form.tsx`,
     sourceCode: `"use client"
 
 import * as React from "react"
@@ -625,6 +630,7 @@ export {
   },
   "input": {
     fileName: `input-form-field.tsx`,
+    componentName: `input`,
     sourceCode: `
 import { cn } from "@/lib/utils";
 import * as React from "react";
@@ -707,6 +713,7 @@ export { InputFormField };
   },
   "input-otp": {
     fileName: `input-otp-form-field.tsx`,
+    componentName: `input-otp`,
     sourceCode: `
 import {
   InputOTP,
@@ -783,6 +790,7 @@ export { InputOtpFormField };
   },
   "multi-select": {
     fileName: `multi-select-form-field.tsx`,
+    componentName: `multi-select`,
     sourceCode: `
 import {
   MultiSelector,
@@ -891,6 +899,7 @@ export { MultiSelectFormField, type MultiSelectFormFieldProps };
   },
   "password-input": {
     fileName: `password-input-form-field.tsx`,
+    componentName: `password-input`,
     sourceCode: `
 import { cn } from "@/lib/utils";
 import * as React from "react";
@@ -969,6 +978,7 @@ export { PasswordInputFormField };
   },
   "radio-group": {
     fileName: `radio-group-form-field.tsx`,
+    componentName: `radio-group`,
     sourceCode: `
 import { cn } from "@/lib/utils";
 import * as SwitchPrimitives from "@radix-ui/react-radio-group";
@@ -1061,6 +1071,7 @@ export { RadioGroupFormField };
   },
   "select": {
     fileName: `select-form-field.tsx`,
+    componentName: `select`,
     sourceCode: `
 import { cn } from "@/lib/utils";
 import * as SelectPrimitive from "@radix-ui/react-select";
@@ -1172,6 +1183,7 @@ export { SelectFormField };
   },
   "slider": {
     fileName: `slider-form-field.tsx`,
+    componentName: `slider`,
     sourceCode: `
 import { cn } from "@/lib/utils";
 import * as SliderPrimitive from "@radix-ui/react-slider";
@@ -1251,6 +1263,7 @@ export { SliderFormField };
   },
   "switch": {
     fileName: `switch-form-field.tsx`,
+    componentName: `switch`,
     sourceCode: `
 import { cn } from "@/lib/utils";
 import * as SwitchPrimitives from "@radix-ui/react-switch";
@@ -1336,6 +1349,7 @@ export { SwitchFormField };
   },
   "tags-input": {
     fileName: `tags-input-form-field.tsx`,
+    componentName: `tags-input`,
     sourceCode: `
 import { cn } from "@/lib/utils";
 import * as React from "react";
@@ -1410,6 +1424,7 @@ export { TagsInputFormField };
   },
   "textarea": {
     fileName: `textarea-form-field.tsx`,
+    componentName: `textarea`,
     sourceCode: `"use client";
 
 import { cn } from "@/lib/utils";
@@ -1485,6 +1500,7 @@ export { TextareaFormField };
   },
   "tiptap-editor": {
     fileName: `tiptap-editor-form-field.tsx`,
+    componentName: `tiptap-editor`,
     sourceCode: `
 import { cn } from "@/lib/utils";
 import { EditorContent, EditorContentProps } from "@tiptap/react";

@@ -52,6 +52,7 @@ function generateRegistry(formType = "react-hook-form") {
 
     output += `  "${componentName}": {\n`;
     output += `    fileName: \`${file}\`,\n`;
+    output += `    componentName: \`${componentName}\`,\n`;
     output += `    sourceCode: \`${sourceCode}\`\n`;
     output += `  },\n`;
   });

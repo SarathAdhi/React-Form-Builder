@@ -1,3 +1,4 @@
+import { componentRegistry } from "@/__registry__";
 import CodeHighlighter from "@/components/code-highlighter";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -6,6 +7,17 @@ interface Props {
     filename: string;
     form_type: string;
   };
+}
+
+export async function generateStaticParams() {
+  return Object.values(componentRegistry).flatMap((registry) =>
+    Object.values(registry).map((component) => ({
+      params: {
+        filename: component.fileName,
+        form_type: component.componentName,
+      },
+    }))
+  );
 }
 
 const ReactHookFormComponentsPage = async ({ params }: Props) => {
