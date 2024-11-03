@@ -1,4 +1,4 @@
-import { componentRegistry } from "@/__registry__";
+import { ComponentRegistryType } from "@/__registry__";
 import { reactHookFormComponentRegistry } from "@/__registry__/react-hook-form";
 import {
   FormBuilderSchemaType,
@@ -192,7 +192,7 @@ const formatFieldProps = (field: FormFieldSchemaType): string => {
 
 export const generateFormCode = (formFields: FormBuilderSchemaType): string => {
   const { form_type } = useParams<{
-    form_type: keyof typeof componentRegistry;
+    form_type: ComponentRegistryType;
   }>();
 
   const imports = Array.from(generateImports(formFields, form_type)).join("\n");

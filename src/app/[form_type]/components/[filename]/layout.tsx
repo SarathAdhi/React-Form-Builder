@@ -1,24 +1,23 @@
-import { reactHookFormComponentRegistry } from "@/__registry__/react-hook-form";
+import { componentRegistry, ComponentRegistryType } from "@/__registry__";
 import ActiveLink from "@/components/active-link";
 
-const files = [
-  {
-    name: "Form",
-    href: "/react-hook-form/components/form",
-  },
-  ...Object.values(reactHookFormComponentRegistry).map((component) => {
+const files = (form_type: ComponentRegistryType) =>
+  Object.values(componentRegistry[form_type]).map((component) => {
     const name = component.fileName.replace(".tsx", "");
     return {
       name: name.replace(/-/g, " "),
-      href: "/react-hook-form/components/" + name,
+      href: `/${form_type}/components/` + name,
     };
-  }),
-];
+  });
 
 export default function ComponentsRootLayout({
   children,
+  params: { form_type },
 }: Readonly<{
   children: React.ReactNode;
+  params: {
+    form_type: ComponentRegistryType;
+  };
 }>) {
   return (
     <div className="container flex items-start gap-4">
@@ -26,7 +25,7 @@ export default function ComponentsRootLayout({
         <h5>Components</h5>
 
         <div className="border-l pl-2 space-y-1">
-          {files.map(({ name, href }) => (
+          {files(form_type).map(({ name, href }) => (
             <ActiveLink key={name} href={href}>
               {name}
             </ActiveLink>

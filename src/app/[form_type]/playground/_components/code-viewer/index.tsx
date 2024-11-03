@@ -1,6 +1,6 @@
 "use client";
 
-import { componentRegistry } from "@/__registry__";
+import { componentRegistry, ComponentRegistryType } from "@/__registry__";
 import CodeHighlighter from "@/components/code-highlighter";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -9,7 +9,7 @@ import { useParams } from "next/navigation";
 import { useFormContext } from "react-hook-form";
 import { generateFormCode } from "./generate-complete-code";
 
-type FormType = keyof typeof componentRegistry;
+type FormType = ComponentRegistryType;
 type FormComponentRegistryType = (typeof componentRegistry)[FormType];
 
 interface FormComponentType {

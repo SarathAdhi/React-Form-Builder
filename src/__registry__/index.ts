@@ -8,4 +8,6 @@ const componentRegistry = {
   "tanstack-form": tanstackFormComponentRegistry,
 };
 
-export { componentRegistry };
+type ComponentRegistryType = keyof typeof componentRegistry;
+
+export { componentRegistry, type ComponentRegistryType };
