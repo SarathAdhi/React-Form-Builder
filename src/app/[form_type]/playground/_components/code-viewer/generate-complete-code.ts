@@ -76,55 +76,72 @@ const getDefaultValue = (field: FormFieldSchemaType) => {
 };
 
 const formatZodSchema = (schema: z.ZodTypeAny): string => {
-  const formatters: Record<string, (schema: any) => string> = {
-    ZodDefault: (s) =>
+  const formatters = {
+    isDefault: (s: z.ZodDefault<any>) =>
       `${formatZodSchema(s._def.innerType)}.default(${JSON.stringify(
         s._def.defaultValue()
       )})`,
-    ZodBoolean: () => "z.boolean()",
-    ZodNumber: (s) => {
+    isBoolean: (s: z.ZodBoolean) => "z.boolean()",
+    isNumber: (s: z.ZodNumber) => {
       let result = "z.number()";
       if ("checks" in s._def) {
-        s._def.checks.forEach((check: { kind: string; value: number }) => {
-          if (check.kind === "min") result += `.min(${check.value})`;
-          if (check.kind === "max") result += `.max(${check.value})`;
+        s._def.checks.forEach((check) => {
+          if (check.kind === "min" && "value" in check)
+            result += `.min(${check.value})`;
+          if (check.kind === "max" && "value" in check)
+            result += `.max(${check.value})`;
         });
       }
       return result;
     },
-    ZodString: (s) => {
+    isString: (s: z.ZodString) => {
       let result = "z.string()";
       if ("checks" in s._def) {
-        s._def.checks.forEach((check: { kind: string; value: number }) => {
-          if (check.kind === "min") result += `.min(${check.value})`;
-          if (check.kind === "max") result += `.max(${check.value})`;
+        s._def.checks.forEach((check) => {
+          if (check.kind === "min" && "value" in check)
+            result += `.min(${check.value})`;
+          if (check.kind === "max" && "value" in check)
+            result += `.max(${check.value})`;
+          if (check.kind === "email") result += `.email()`;
         });
       }
       return result;
     },
-    ZodDate: () => "z.coerce.date()",
-    ZodArray: (s) => `z.array(${formatZodSchema(s.element)}).nonempty()`,
-    ZodObject: (s) => {
+    isDate: (s: z.ZodDate) => "z.coerce.date()",
+    isArray: (s: z.ZodArray<any>) =>
+      `z.array(${formatZodSchema(s.element)}).nonempty()`,
+    isObject: (s: z.ZodObject<any>) => {
       const shapeStrs = Object.entries(s.shape).map(
         ([key, value]) => `${key}: ${formatZodSchema(value as z.ZodTypeAny)}`
       );
       return `z.object({\n  ${shapeStrs.join(",\n  ")}\n})`;
     },
-    ZodOptional: (s) => `${formatZodSchema(s.unwrap())}.optional()`,
+    isOptional: (s: z.ZodOptional<any>) =>
+      `${formatZodSchema(s.unwrap())}.optional()`,
   };
 
-  const schemaType = schema.constructor.name;
-  return formatters[schemaType]?.(schema) ?? "z.unknown()";
+  // Check type using Zod's built-in type guards
+  if (schema instanceof z.ZodDefault) return formatters.isDefault(schema);
+  if (schema instanceof z.ZodBoolean) return formatters.isBoolean(schema);
+  if (schema instanceof z.ZodNumber) return formatters.isNumber(schema);
+  if (schema instanceof z.ZodString) return formatters.isString(schema);
+  if (schema instanceof z.ZodDate) return formatters.isDate(schema);
+  if (schema instanceof z.ZodArray) return formatters.isArray(schema);
+  if (schema instanceof z.ZodObject) return formatters.isObject(schema);
+  if (schema instanceof z.ZodOptional) return formatters.isOptional(schema);
+
+  return "z.unknown()";
 };
 
-// Main functions
 export const generateZodSchema = (
   formFields: FormBuilderSchemaType
 ): z.ZodObject<any> => {
   const schemaObject: ZodSchemaObject = {};
+
   formFields.fields.flat().forEach((field) => {
     schemaObject[field.name] = createFieldSchema(field);
   });
+
   return z.object(schemaObject);
 };
 
