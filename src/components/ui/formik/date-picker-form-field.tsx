@@ -2,7 +2,6 @@
 
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import { Control, FieldValues } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -26,7 +25,6 @@ interface Props {
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
   labelClassName?: string;
   required?: boolean;
 }
@@ -36,14 +34,12 @@ const DatePickerFormField = ({
   labelClassName,
   name,
   label,
-  control,
   description,
   ...props
 }: Props) => (
   <FormField
-    control={control}
     name={name!}
-    render={({ field }) => (
+    render={({ field, form }) => (
       <FormItem
         className={cn("w-full flex flex-col space-y-1", containerClassName)}
       >
@@ -78,7 +74,7 @@ const DatePickerFormField = ({
             <Calendar
               mode="single"
               selected={field.value}
-              onSelect={field.onChange}
+              onSelect={(value) => form.setFieldValue(name, value)}
               disabled={(date) =>
                 date > new Date() || date < new Date("1900-01-01")
               }

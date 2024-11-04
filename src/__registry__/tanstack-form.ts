@@ -6,7 +6,6 @@ export const tanstackFormComponentRegistry = {
 import { cn } from "@/lib/utils";
 import * as SwitchPrimitives from "@radix-ui/react-checkbox";
 import * as React from "react";
-import { Control, FieldValues } from "react-hook-form";
 import { Checkbox } from "./checkbox";
 import {
   FormControl,
@@ -20,7 +19,6 @@ interface Props {
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
   labelClassName?: string;
 }
 
@@ -35,7 +33,6 @@ const CheckboxFormField = React.forwardRef<
       labelClassName,
       name,
       label,
-      control,
       description,
       ...props
     },
@@ -103,7 +100,6 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
-import { Control, FieldValues } from "react-hook-form";
 import {
   FormControl,
   FormDescription,
@@ -118,7 +114,6 @@ interface Props {
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
   labelClassName?: string;
   options?: {
     label: string;
@@ -133,7 +128,6 @@ const ComboboxFormField = ({
   labelClassName,
   name,
   label,
-  control,
   description,
   options = [],
   placeholder,
@@ -220,10 +214,6 @@ export { ComboboxFormField };
     fileName: `date-picker-form-field.tsx`,
     componentName: `date-picker`,
     sourceCode: `
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
-import { Control, FieldValues } from "react-hook-form";
-
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -232,6 +222,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 import {
   FormControl,
   FormDescription,
@@ -246,7 +238,6 @@ interface Props {
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
   labelClassName?: string;
   required?: boolean;
 }
@@ -256,7 +247,6 @@ const DatePickerFormField = ({
   labelClassName,
   name,
   label,
-  control,
   description,
   ...props
 }: Props) => (
@@ -331,7 +321,6 @@ import { cn } from "@/lib/utils";
 import { CloudUploadIcon, PaperclipIcon } from "lucide-react";
 import * as React from "react";
 import { DropzoneOptions } from "react-dropzone";
-import { Control, FieldValues } from "react-hook-form";
 import {
   FormControl,
   FormDescription,
@@ -345,7 +334,6 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
   labelClassName?: string;
   dropzoneOptions?: DropzoneOptions;
 }
@@ -367,7 +355,6 @@ const FileUploadFormField = React.forwardRef<
       labelClassName,
       name,
       label,
-      control,
       description,
       dropzoneOptions = dropZoneConfig,
       ...props
@@ -654,7 +641,6 @@ export {
     sourceCode: `
 import { cn } from "@/lib/utils";
 import * as React from "react";
-import { Control, FieldValues } from "react-hook-form";
 import { Input } from "./input";
 import {
   FormControl,
@@ -669,7 +655,6 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
   labelClassName?: string;
 }
 
@@ -681,7 +666,6 @@ const InputFormField = React.forwardRef<HTMLInputElement, Props>(
       labelClassName,
       name,
       label,
-      control,
       description,
       ...props
     },
@@ -742,7 +726,6 @@ import {
 } from "@/components/ui/input-otp";
 import { cn } from "@/lib/utils";
 import * as React from "react";
-import { Control, FieldValues } from "react-hook-form";
 import {
   FormControl,
   FormDescription,
@@ -755,7 +738,6 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
   labelClassName?: string;
   maxLength: number;
 }
@@ -768,7 +750,6 @@ const InputOtpFormField = React.forwardRef<HTMLInputElement, Props>(
       labelClassName,
       name,
       label,
-      control,
       description,
       ...props
     },
@@ -826,7 +807,6 @@ import {
   MultiSelectorTrigger,
 } from "@/components/ui/multi-select";
 import { cn } from "@/lib/utils";
-import { Control, FieldValues, Path, PathValue } from "react-hook-form";
 import {
   FormControl,
   FormDescription,
@@ -841,13 +821,12 @@ interface Option {
   value: string;
 }
 
-interface MultiSelectFormFieldProps<TFieldValues extends FieldValues>
+interface MultiSelectFormFieldProps
   extends Omit<MultiSelectorProps, "values" | "onValuesChange"> {
-  name: Path<TFieldValues>;
+  name: string;
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<TFieldValues>;
   labelClassName?: string;
   required?: boolean;
   placeholder?: string;
@@ -861,12 +840,11 @@ const MultiSelectFormField = ({
   labelClassName,
   name,
   label,
-  control,
   description,
   placeholder,
   options = [],
   ...props
-}: MultiSelectFormFieldProps<FieldValues>) => {
+}: MultiSelectFormFieldProps) => {
   return (
     <FormField name={name}>
       {(field) => (
@@ -884,9 +862,7 @@ const MultiSelectFormField = ({
               {...props}
               values={(field.state.value || []) as string[]}
               onValuesChange={(values) => {
-                field.handleChange(
-                  values as PathValue<FieldValues, Path<FieldValues>>
-                );
+                field.handleChange(values);
               }}
             >
               <MultiSelectorTrigger className={className}>
@@ -926,7 +902,6 @@ export { MultiSelectFormField, type MultiSelectFormFieldProps };
     sourceCode: `
 import { cn } from "@/lib/utils";
 import * as React from "react";
-import { Control, FieldValues } from "react-hook-form";
 import { PasswordInput } from "./password-input";
 import {
   FormControl,
@@ -942,7 +917,6 @@ interface PasswordInputFormField
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
   labelClassName?: string;
 }
 
@@ -957,7 +931,6 @@ const PasswordInputFormField = React.forwardRef<
       labelClassName,
       name,
       label,
-      control,
       description,
       ...props
     },
@@ -1004,7 +977,6 @@ export { PasswordInputFormField };
 import { cn } from "@/lib/utils";
 import * as SwitchPrimitives from "@radix-ui/react-radio-group";
 import * as React from "react";
-import { Control, FieldValues } from "react-hook-form";
 import { RadioGroup, RadioGroupItem } from "./radio-group";
 import {
   FormControl,
@@ -1018,7 +990,6 @@ interface Props {
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
   labelClassName?: string;
   options?: {
     label: string;
@@ -1037,7 +1008,6 @@ const RadioGroupFormField = React.forwardRef<
       labelClassName,
       name,
       label,
-      control,
       description,
       options = [],
       ...props
@@ -1096,7 +1066,6 @@ export { RadioGroupFormField };
 import { cn } from "@/lib/utils";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import * as React from "react";
-import { Control, FieldValues } from "react-hook-form";
 import {
   Select,
   SelectContent,
@@ -1118,7 +1087,6 @@ interface Props {
   containerClassName?: string;
   labelClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
   placeholder?: string;
   options?: {
     label: string;
@@ -1136,7 +1104,6 @@ const SelectFormField = React.forwardRef<
       labelClassName,
       name,
       label,
-      control,
       description,
       placeholder,
       options = [],
@@ -1159,7 +1126,6 @@ const SelectFormField = React.forwardRef<
               {...{
                 name,
                 label,
-                control,
                 description,
                 placeholder,
                 options,
@@ -1207,7 +1173,6 @@ export { SelectFormField };
 import { cn } from "@/lib/utils";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import * as React from "react";
-import { Control, FieldValues } from "react-hook-form";
 import { Slider } from "./slider";
 import {
   FormControl,
@@ -1222,7 +1187,6 @@ interface Props {
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
   labelClassName?: string;
   required?: boolean;
 }
@@ -1238,7 +1202,6 @@ const SliderFormField = React.forwardRef<
       labelClassName,
       name,
       label,
-      control,
       description,
       ...props
     },
@@ -1282,8 +1245,6 @@ export { SliderFormField };
     fileName: `smart-datetime-input-form-field.tsx`,
     componentName: `smart-datetime-input`,
     sourceCode: `
-import { Control, FieldValues } from "react-hook-form";
-
 import { cn } from "@/lib/utils";
 import React from "react";
 import { SmartDatetimeInput } from "./smart-datetime-input";
@@ -1301,7 +1262,6 @@ interface Props {
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
   labelClassName?: string;
   required?: boolean;
 }
@@ -1315,15 +1275,7 @@ const SmartDateTimeFormField = React.forwardRef<
     Props
 >(
   (
-    {
-      containerClassName,
-      labelClassName,
-      name,
-      label,
-      control,
-      description,
-      ...props
-    },
+    { containerClassName, labelClassName, name, label, description, ...props },
     ref
   ) => (
     <FormField name={name!}>
@@ -1368,7 +1320,6 @@ export { SmartDateTimeFormField };
 import { cn } from "@/lib/utils";
 import * as SwitchPrimitives from "@radix-ui/react-switch";
 import * as React from "react";
-import { Control, FieldValues } from "react-hook-form";
 import { Switch } from "./switch";
 import {
   FormControl,
@@ -1382,7 +1333,6 @@ interface Props {
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
   labelClassName?: string;
 }
 
@@ -1397,7 +1347,6 @@ const SwitchFormField = React.forwardRef<
       labelClassName,
       name,
       label,
-      control,
       description,
       ...props
     },
@@ -1451,7 +1400,6 @@ export { SwitchFormField };
     sourceCode: `
 import { cn } from "@/lib/utils";
 import * as React from "react";
-import { Control, FieldValues } from "react-hook-form";
 import { TagsInput } from "./tags-input";
 import {
   FormControl,
@@ -1466,7 +1414,6 @@ interface Props extends React.InputHTMLAttributes<HTMLDivElement> {
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
   labelClassName?: string;
 }
 
@@ -1478,7 +1425,6 @@ const TagsInputFormField = React.forwardRef<HTMLDivElement, Props>(
       labelClassName,
       name,
       label,
-      control,
       description,
       ...props
     },
@@ -1525,7 +1471,6 @@ export { TagsInputFormField };
 
 import { cn } from "@/lib/utils";
 import * as React from "react";
-import { Control, FieldValues } from "react-hook-form";
 import { Textarea } from "./textarea";
 import {
   FormControl,
@@ -1540,20 +1485,11 @@ interface TextareaProps extends React.InputHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
 }
 
 const TextareaFormField = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   (
-    {
-      className,
-      containerClassName,
-      name,
-      label,
-      control,
-      description,
-      ...props
-    },
+    { className, containerClassName, name, label, description, ...props },
     ref
   ) => (
     <FormField name={name!}>
@@ -1599,7 +1535,6 @@ export { TextareaFormField };
 import { cn } from "@/lib/utils";
 import { EditorContent, EditorContentProps } from "@tiptap/react";
 import React from "react";
-import { Control, FieldValues } from "react-hook-form";
 import { TiptapEditor } from "./tiptap-editor";
 import {
   FormControl,
@@ -1615,7 +1550,6 @@ interface Props extends Omit<EditorContentProps, "editor"> {
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
   labelClassName?: string;
   required?: boolean;
   disabled?: boolean;
@@ -1626,15 +1560,7 @@ const TiptapEditorFormField = React.forwardRef<
   Props
 >(
   (
-    {
-      containerClassName,
-      labelClassName,
-      name,
-      label,
-      control,
-      description,
-      ...props
-    },
+    { containerClassName, labelClassName, name, label, description, ...props },
     ref
   ) => (
     <FormField name={name!}>

@@ -1,10 +1,8 @@
 "use client";
 
-import { Control, FieldValues } from "react-hook-form";
-
 import { cn } from "@/lib/utils";
-import React from "react";
-import { SmartDatetimeInput } from "../smart-datetime-input";
+import * as React from "react";
+import { PasswordInput } from "../password-input";
 import {
   FormControl,
   FormDescription,
@@ -14,43 +12,34 @@ import {
   FormMessage,
 } from "./form";
 
-interface Props {
-  name: string;
+interface PasswordInputFormField
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
   labelClassName?: string;
-  required?: boolean;
 }
 
-const SmartDateTimeFormField = React.forwardRef<
+const PasswordInputFormField = React.forwardRef<
   HTMLInputElement,
-  Omit<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    "type" | "ref" | "value" | "defaultValue" | "onBlur"
-  > &
-    Props
+  PasswordInputFormField
 >(
   (
     {
+      className,
       containerClassName,
       labelClassName,
       name,
       label,
-      control,
       description,
       ...props
     },
     ref
   ) => (
     <FormField
-      control={control}
       name={name!}
-      render={({ field, formState }) => (
-        <FormItem
-          className={cn("w-full flex flex-col space-y-1", containerClassName)}
-        >
+      render={({ field, form }) => (
+        <FormItem className={cn("w-full space-y-1", containerClassName)}>
           {label && (
             <FormLabel htmlFor={name} className={labelClassName}>
               {label}{" "}
@@ -59,16 +48,17 @@ const SmartDateTimeFormField = React.forwardRef<
           )}
 
           <FormControl>
-            <SmartDatetimeInput
-              {...props}
+            <PasswordInput
               ref={ref}
-              value={field.value}
-              onValueChange={field.onChange}
-              disabled={formState.isSubmitting || props.disabled}
+              {...props}
+              {...field}
+              name={name}
+              disabled={form.isSubmitting || props.disabled}
             />
           </FormControl>
 
           {description && <FormDescription>{description}</FormDescription>}
+
           <FormMessage />
         </FormItem>
       )}
@@ -76,6 +66,6 @@ const SmartDateTimeFormField = React.forwardRef<
   )
 );
 
-SmartDateTimeFormField.displayName = "SmartDateTimeFormField";
+PasswordInputFormField.displayName = "PasswordInputFormField";
 
-export { SmartDateTimeFormField };
+export { PasswordInputFormField };

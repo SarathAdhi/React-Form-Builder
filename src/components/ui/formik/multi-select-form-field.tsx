@@ -10,7 +10,7 @@ import {
   MultiSelectorTrigger,
 } from "@/components/ui/multi-select";
 import { cn } from "@/lib/utils";
-import { Control, FieldValues, Path, PathValue } from "react-hook-form";
+import { FieldValues, Path, PathValue } from "react-hook-form";
 import {
   FormControl,
   FormDescription,
@@ -31,7 +31,6 @@ interface MultiSelectFormFieldProps<TFieldValues extends FieldValues>
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<TFieldValues>;
   labelClassName?: string;
   required?: boolean;
   placeholder?: string;
@@ -45,7 +44,6 @@ const MultiSelectFormField = ({
   labelClassName,
   name,
   label,
-  control,
   description,
   placeholder,
   options = [],
@@ -53,9 +51,8 @@ const MultiSelectFormField = ({
 }: MultiSelectFormFieldProps<FieldValues>) => {
   return (
     <FormField
-      control={control}
       name={name}
-      render={({ field, formState }) => (
+      render={({ field, form }) => (
         <FormItem className={cn("w-full space-y-1", containerClassName)}>
           {label && (
             <FormLabel className={labelClassName}>
@@ -70,14 +67,15 @@ const MultiSelectFormField = ({
               {...props}
               values={(field.value || []) as string[]}
               onValuesChange={(values) => {
-                field.onChange(
+                form.setFieldValue(
+                  name,
                   values as PathValue<FieldValues, Path<FieldValues>>
                 );
               }}
             >
               <MultiSelectorTrigger className={className}>
                 <MultiSelectorInput
-                  disabled={formState.isSubmitting || props.disabled}
+                  disabled={props.disabled}
                   placeholder={placeholder}
                 />
               </MultiSelectorTrigger>

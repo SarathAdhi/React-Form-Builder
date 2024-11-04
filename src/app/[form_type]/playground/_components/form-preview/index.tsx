@@ -59,6 +59,7 @@ const FormTypeSelector = ({
       <SelectTrigger className="w-40">
         <SelectValue placeholder="Select form type" />
       </SelectTrigger>
+
       <SelectContent>
         {FORM_TYPE_OPTIONS.map((option) => (
           <SelectItem key={option.value} value={option.value}>

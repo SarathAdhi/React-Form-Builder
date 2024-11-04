@@ -1,7 +1,5 @@
 "use client";
 
-import { Control, FieldValues } from "react-hook-form";
-
 import { cn } from "@/lib/utils";
 import React from "react";
 import { SmartDatetimeInput } from "../smart-datetime-input";
@@ -19,7 +17,6 @@ interface Props {
   label?: string;
   containerClassName?: string;
   description?: string;
-  control?: Control<FieldValues>;
   labelClassName?: string;
   required?: boolean;
 }
@@ -33,21 +30,12 @@ const SmartDateTimeFormField = React.forwardRef<
     Props
 >(
   (
-    {
-      containerClassName,
-      labelClassName,
-      name,
-      label,
-      control,
-      description,
-      ...props
-    },
+    { containerClassName, labelClassName, name, label, description, ...props },
     ref
   ) => (
     <FormField
-      control={control}
       name={name!}
-      render={({ field, formState }) => (
+      render={({ field, form }) => (
         <FormItem
           className={cn("w-full flex flex-col space-y-1", containerClassName)}
         >
@@ -63,8 +51,8 @@ const SmartDateTimeFormField = React.forwardRef<
               {...props}
               ref={ref}
               value={field.value}
-              onValueChange={field.onChange}
-              disabled={formState.isSubmitting || props.disabled}
+              onValueChange={(value) => form.setFieldValue(name!, value)}
+              disabled={props.disabled}
             />
           </FormControl>
 

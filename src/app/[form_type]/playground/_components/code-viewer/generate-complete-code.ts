@@ -15,7 +15,6 @@ const getBaseImports = (formType: string) => {
   const commonImports = [
     '"use client"',
     'import { useState } from "react"',
-    'import * as z from "zod"',
     'import { cn } from "@/lib/utils"',
     'import { Button } from "@/components/ui/button"',
     'import { Form } from "@/components/ui/form"',
@@ -23,13 +22,16 @@ const getBaseImports = (formType: string) => {
 
   const formSpecificImports = {
     "react-hook-form": [
+      'import * as z from "zod"',
       'import { useForm } from "react-hook-form"',
       'import { zodResolver } from "@hookform/resolvers/zod"',
     ],
     "tanstack-form": [
+      'import * as z from "zod"',
       'import { useForm } from "@tanstack/react-form"',
       'import { zodValidator } from "@tanstack/zod-form-adapter"',
     ],
+    formik: ['import * as Yup from "yup"'],
   };
 
   return [
@@ -133,6 +135,41 @@ const formatZodSchema = (schema: z.ZodTypeAny): string => {
   return "z.unknown()";
 };
 
+const getYupSchemaString = (formFields: FormBuilderSchemaType): string => {
+  const schemaEntries = formFields.fields.flat().map((field) => {
+    const required = field.required ? `.required()` : ``;
+
+    let typeSchema;
+    switch (field.fieldType) {
+      case "checkbox":
+      case "switch":
+        typeSchema = `Yup.boolean()`;
+        break;
+      case "input":
+        switch (field.type) {
+          case "email":
+            typeSchema = `Yup.string().email()`;
+            break;
+          case "number":
+            typeSchema = `Yup.number()`;
+            break;
+          default:
+            typeSchema = `Yup.string()`;
+            break;
+        }
+        break;
+      default:
+        typeSchema = `Yup.string()`;
+    }
+
+    return `  ${field.name}: ${typeSchema}${required}`;
+  });
+
+  return `const formSchema = Yup.object().shape({\n${schemaEntries.join(
+    ",\n"
+  )}\n});`;
+};
+
 export const generateZodSchema = (
   formFields: FormBuilderSchemaType
 ): z.ZodObject<any> => {
@@ -211,7 +248,10 @@ export const generateFormCode = (
   form_type: ComponentRegistryType
 ): string => {
   const imports = Array.from(generateImports(formFields, form_type)).join("\n");
-  const schema = getZodSchemaString(formFields);
+  const schema =
+    form_type === "formik"
+      ? getYupSchemaString(formFields)
+      : getZodSchemaString(formFields);
   const defaultValues = generateDefaultValues(formFields);
 
   const formFields_rendered = formFields.fields
@@ -274,6 +314,23 @@ ${Object.entries(defaultValues)
 
   return (
     <Form {...form}>
+${formFields_rendered}
+
+      <Button type="submit">Submit</Button>
+    </Form>
+  );
+}`,
+    formik: `
+export default function MyForm() {
+  return (
+    <Form
+      validationSchema={formSchema}
+      initialValues={{ 
+${Object.entries(defaultValues)
+  .map(([key, value]) => `      ${key}: ${JSON.stringify(value)}`)
+  .join(",\n")}
+      }}
+      onSubmit={(values) => console.log(values)}>
 ${formFields_rendered}
 
       <Button type="submit">Submit</Button>

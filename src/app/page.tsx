@@ -1,7 +1,18 @@
+"use client";
+
 import { HeroVideoDialog } from "@/components/animated/hero-video-dialog";
 import DotPattern from "@/components/dot-pattern-background";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import * as Yup from "yup";
+
+const SignupSchema = Yup.object().shape({
+  password: Yup.string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+  email: Yup.string().email("Invalid email").required("Required"),
+});
 
 const HomePage = () => {
   return (

@@ -235,6 +235,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 import {
   FormControl,
   FormDescription,
@@ -242,8 +243,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/react-hook-form/form";
-import { cn } from "@/lib/utils";
+} from "./form";
 
 interface Props {
   name: string;
@@ -801,6 +801,8 @@ import {
   MultiSelectorProps,
   MultiSelectorTrigger,
 } from "@/components/ui/multi-select";
+import { cn } from "@/lib/utils";
+import { Control, FieldValues, Path, PathValue } from "react-hook-form";
 import {
   FormControl,
   FormDescription,
@@ -808,9 +810,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/react-hook-form/form";
-import { cn } from "@/lib/utils";
-import { Control, FieldValues, Path, PathValue } from "react-hook-form";
+} from "./form";
 
 interface Option {
   label: string;
@@ -1267,6 +1267,9 @@ export { SliderFormField };
     sourceCode: `
 import { Control, FieldValues } from "react-hook-form";
 
+import { cn } from "@/lib/utils";
+import React from "react";
+import { SmartDatetimeInput } from "./smart-datetime-input";
 import {
   FormControl,
   FormDescription,
@@ -1274,10 +1277,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/react-hook-form/form";
-import { cn } from "@/lib/utils";
-import React from "react";
-import { SmartDatetimeInput } from "./smart-datetime-input";
+} from "./form";
 
 interface Props {
   name: string;
