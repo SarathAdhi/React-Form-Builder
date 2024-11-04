@@ -9,6 +9,7 @@ import { VariantProps } from "class-variance-authority";
 import { GithubIcon, Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import ActiveLink from "../active-link";
 
 const pages: {
   title: string;
@@ -99,7 +100,7 @@ const Navbar = () => {
                     <DropdownMenuContent align="end">
                       {items.map((item) => (
                         <DropdownMenuItem key={item.title} asChild>
-                          <Link href={item.href}>{item.title}</Link>
+                          <ActiveLink href={item.href}>{item.title}</ActiveLink>
                         </DropdownMenuItem>
                       ))}
                     </DropdownMenuContent>

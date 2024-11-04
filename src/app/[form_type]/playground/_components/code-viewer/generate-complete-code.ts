@@ -290,7 +290,7 @@ ${Object.entries(defaultValues)
       <form onSubmit={form.handleSubmit(onSubmit)} className="p-4 space-y-4">
 ${formFields_rendered}
 
-        <Button type="submit">Submit</Button>
+          <Button type="submit">Submit</Button>
       </form>
     </Form>
   );
@@ -316,7 +316,7 @@ ${Object.entries(defaultValues)
     <Form {...form}>
 ${formFields_rendered}
 
-      <Button type="submit">Submit</Button>
+        <Button type="submit">Submit</Button>
     </Form>
   );
 }`,
@@ -326,14 +326,15 @@ export default function MyForm() {
     <Form
       validationSchema={formSchema}
       initialValues={{ 
-${Object.entries(defaultValues)
-  .map(([key, value]) => `      ${key}: ${JSON.stringify(value)}`)
-  .join(",\n")}
+  ${Object.entries(defaultValues)
+    .map(([key, value]) => `      ${key}: ${JSON.stringify(value)}`)
+    .join(",\n  ")}
       }}
-      onSubmit={(values) => console.log(values)}>
+      onSubmit={(values) => console.log(values)}
+    >
 ${formFields_rendered}
 
-      <Button type="submit">Submit</Button>
+        <Button type="submit">Submit</Button>
     </Form>
   );
 }`,

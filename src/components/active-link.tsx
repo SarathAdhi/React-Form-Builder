@@ -1,24 +1,23 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { cn } from "@/lib/utils";
+import Link, { LinkProps } from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 
-const ActiveLink = ({
-  children,
-  href,
-}: {
-  children: React.ReactNode;
-  href: string;
-}) => {
+type Props = {
+  href: LinkProps["href"];
+} & React.ComponentProps<typeof Button>;
+
+const ActiveLink: React.FC<Props> = ({ children, href, className }) => {
   const pathname = usePathname();
 
   return (
     <Button
       size="sm"
       variant={pathname === href ? "default" : "ghost"}
-      className="w-full justify-start capitalize"
+      className={cn("w-full justify-start capitalize", className)}
       asChild
     >
       <Link href={href}>{children}</Link>
