@@ -97,9 +97,9 @@ const Navbar = () => {
                       </Button>
                     </DropdownMenuTrigger>
 
-                    <DropdownMenuContent align="end">
+                    <DropdownMenuContent align="center">
                       {items.map((item) => (
-                        <DropdownMenuItem key={item.title} asChild>
+                        <DropdownMenuItem key={item.title} className="p-0">
                           <ActiveLink href={item.href}>{item.title}</ActiveLink>
                         </DropdownMenuItem>
                       ))}

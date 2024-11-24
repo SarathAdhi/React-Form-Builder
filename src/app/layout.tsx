@@ -1,3 +1,4 @@
+import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
@@ -34,7 +35,9 @@ export default function RootLayout({
       >
         <Navbar />
 
-        {children}
+        <main className="flex flex-col flex-1">{children}</main>
+
+        <Footer />
 
         <Analytics />
 
